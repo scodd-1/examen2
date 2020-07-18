@@ -16,7 +16,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.example.rest.dao.MarcaModel;
+import com.example.rest.dao.ProductoModel;
 import com.example.rest.entidades.Marca;
+import com.example.rest.entidades.Producto;
 
 
 @Path("/servicios")
@@ -24,8 +26,9 @@ import com.example.rest.entidades.Marca;
 @Consumes({ MediaType.APPLICATION_JSON })
 public class ServicioMarca {
 	private static final Log log = LogFactory.getLog(ServicioMarca.class);
-		private MarcaModel daoMarca = new MarcaModel();
 	
+		private MarcaModel daoMarca = new MarcaModel();
+		private ProductoModel daoPro = new ProductoModel();
 
 	
 	@GET
@@ -65,5 +68,39 @@ public class ServicioMarca {
 			return Response.notModified().build();
 	}
 
-	
+	// Crud de producto
+
+	@GET
+	@Path("/producto")
+	public Response listarproductoTodos() {
+		log.info("listar producto rest ");
+		return Response.ok(daoPro.listarproductoTodos()).build();
+	}
+	@POST
+	@Path("/producto")
+	public Response registraproducto(Producto obj) {
+		log.info("Registra producto " + obj.getIdProducto());
+		if (daoPro.insertaproducto(obj) > 0)
+			return Response.ok().build();
+		else
+			return Response.notModified().build();
+	}
+	@PUT
+	@Path("/producto")
+	public Response atualizatipoproducto(Producto obj) {
+		log.info("Actualiza producto " + obj.getIdProducto());
+		if (daoPro.actualizaproducto(obj) > 0)
+			return Response.ok().build();
+		else
+			return Response.notModified().build();
+	}
+	@DELETE
+	@Path("/producto/{idproducto}")
+	public Response eliminaproducto(@PathParam("idProducto") int id) {
+		log.info("Elimina producto " + id);
+		if (daoPro.eliminaproducto(id) > 0)
+			return Response.ok().build();
+		else
+			return Response.notModified().build();
+	}
 }

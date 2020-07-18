@@ -17,8 +17,10 @@ import org.apache.commons.logging.LogFactory;
 
 import com.example.rest.dao.MarcaModel;
 import com.example.rest.dao.ProductoModel;
+import com.example.rest.dao.TipoDeReclamoModel;
 import com.example.rest.entidades.Marca;
 import com.example.rest.entidades.Producto;
+import com.example.rest.entidades.TipoDeReclamo;
 
 
 @Path("/servicios")
@@ -29,6 +31,7 @@ public class ServicioMarca {
 	
 		private MarcaModel daoMarca = new MarcaModel();
 		private ProductoModel daoPro = new ProductoModel();
+		private TipoDeReclamoModel daoTipo = new TipoDeReclamoModel();
 
 	
 	@GET
@@ -103,4 +106,41 @@ public class ServicioMarca {
 		else
 			return Response.notModified().build();
 	}
+	// Crud de tipoReclamo
+		@GET
+		@Path("/tiporeclamo")
+		public Response listartipoReclamoTodos() {
+			log.info("listar tiporeclamo rest ");
+			return Response.ok(daoTipo.listartipoReclamoTodos()).build();
+		}
+
+		@POST
+		@Path("/tiporeclamo")
+		public Response registratipoReclamo(TipoDeReclamo obj) {
+			log.info("Registra tiporeclamo " + obj.getIdTipo());
+			if (daoTipo.insertatipoReclamo(obj) > 0)
+				return Response.ok().build();
+			else
+				return Response.notModified().build();
+		}
+
+		@PUT
+		@Path("/tiporeclamo")
+		public Response atualizatipoReclamo(TipoDeReclamo obj) {
+			log.info("Actualiza tiporeclamo " + obj.getIdTipo());
+			if (daoTipo.actualizatipoReclamo(obj) > 0)
+				return Response.ok().build();
+			else
+				return Response.notModified().build();
+		}
+
+		@DELETE
+		@Path("/tiporeclamo/{idTipo}")
+		public Response eliminatipoReclamo(@PathParam("idTipo") int id) {
+			log.info("Elimina tiporeclamo " + id);
+			if (daoTipo.eliminatipoReclamo(id) > 0)
+				return Response.ok().build();
+			else
+				return Response.notModified().build();
+		}
 }
